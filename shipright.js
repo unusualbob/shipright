@@ -290,12 +290,13 @@ app.get('/:actorSlug/:projectSlug/blob/:branchName/:filePath',  setupRepo , proj
 app.get('/:actorSlug/:projectSlug/commit/:commitID',            setupRepo , projects.viewCommit );
 
 function setupPushover(req, res, next) {
+  req.pause();
   Project.lookup( req.param('uniqueSlug') , function(err, project) {
     if (err) { console.log(err); }
     if (!project) { return next(); }
 
     req.projectID = project._id.toString();
-
+    req.resume();
     next();
   });
 }
